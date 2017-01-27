@@ -1,0 +1,35 @@
+{
+   "tags" : [
+      "aws"
+   ],
+   "provides" : {
+      "WebService::AWS::S3" : "lib/WebService/AWS/S3.pm6"
+   },
+   "test-depends" : [
+      "Test"
+   ],
+   "support" : {
+      "source" : "git://github.com/bduggan/aws-s3-p6.git"
+   },
+   "perl" : "6.c",
+   "build-depends" : [],
+   "auth" : "github:bduggan",
+   "source-url" : "git://github.com/bduggan/aws-s3-p6.git",
+   "depends" : [
+      "Test",
+      "XML::Class",
+      "URI::Encode",
+      "IO::Socket::SSL",
+      "HTTP::UserAgent",
+      "Digest",
+      "Digest::HMAC",
+      "URI"
+   ],
+   "name" : "WebService::AWS::S3",
+   "authors" : [
+      "Brian Duggan <bduggan@matatu.org>"
+   ],
+   "version" : "0.0.1",
+   "license" : "Artistic",
+   "description" : "AWS S3 Client"
+}
