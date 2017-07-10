@@ -64,7 +64,7 @@ my \s3 = S3.new(:region<us-east-1>);
 say s3.get("s3://my.own.bucket/hello/world.txt")
 ```
 
-* Put text at an S3 location.
+* Put text to an S3 location.
 
 ```p6
 use WebService::AWS::S3;
