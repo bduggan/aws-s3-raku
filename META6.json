@@ -23,6 +23,7 @@
       "HTTP::UserAgent",
       "Digest",
       "Digest::HMAC",
+      "JSON::Fast",
       "URI"
    ],
    "name" : "WebService::AWS::S3",
