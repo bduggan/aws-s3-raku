@@ -9,12 +9,12 @@
       "Test"
    ],
    "support" : {
-      "source" : "git://github.com/bduggan/aws-s3-p6.git"
+      "source" : "git://github.com/bduggan/aws-s3-perl6.git"
    },
    "perl" : "6.c",
    "build-depends" : [],
    "auth" : "github:bduggan",
-   "source-url" : "git://github.com/bduggan/aws-s3-p6.git",
+   "source-url" : "git://github.com/bduggan/aws-s3-perl6.git",
    "depends" : [
       "Test",
       "XML::Class",
