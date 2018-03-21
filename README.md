@@ -1,5 +1,5 @@
-WebService::AWS::S3
-=======
+# WebService::AWS::S3
+
 Client for Amazon Web Services' Simple Storage Service
 
 [![Build Status](https://travis-ci.org/bduggan/aws-s3-perl6.svg)](https://travis-ci.org/bduggan/aws-s3-perl6)
