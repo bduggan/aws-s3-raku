@@ -14,7 +14,7 @@ class Mock {
         $file .= child($_)
             for (
             << mock data "{$req.uri.host}" >>,
-            $req.uri.path.split("/"),
+            $req.uri.path.Str.split("/"),
             'response.xml'
             ).flat;
         $file.e or die "no mock data $file";
