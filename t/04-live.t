@@ -3,7 +3,7 @@
 use lib 'lib';
 use WebService::AWS::S3;
 use Test;
-plan 14;
+plan 16;
 
 unless %*ENV<AWS_TEST_BUCKET> && %*ENV<AWS_TEST_PREFIX> {
   note "set AWS_TEST_BUCKET and AWS_TEST_PREFIX to run live tests";
@@ -52,5 +52,8 @@ ok $s3.put(:$content,:$url), "put plaintext";
 sleep 1;
 my $got = $s3.get($url);
 is $content, $got, "roundtrip";
+ok $s3.delete($url), "delete";
 
+$objects = $s3.list-objects(:$bucket, :$prefix);
 
+ok !$objects.objects.grep( *.url eq $url ), "and the object got deleted";
