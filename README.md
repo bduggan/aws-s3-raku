@@ -13,7 +13,7 @@ my $secret-access-key = 'passw0rd';
 my $access-key-id = 'password1';
 my $region = 'us-east-1';
 
-my \s3 = S3.new(:secret-access-key, :$access-key-id, :$:region);
+my \s3 = S3.new(:$secret-access-key, :$access-key-id, :$region);
 
 s3.put:
    content => "Hello, world!!",

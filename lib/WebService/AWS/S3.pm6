@@ -99,6 +99,19 @@ class S3 {
     return $!res;
   }
 
+  method do-delete-request(:$subdomain, :$path is copy='') {
+    my $host = (|($subdomain xx so $subdomain), $.aws-host).join('.');
+    $path = "/$path" unless $path ~~ / ^ '/' /;
+    my $uri = 'https://' ~ $host ~ $path;
+    $!req = DELETE $uri, |self.signed-headers(:$host,:$path,:method<DELETE>);
+    $!res = $.ua.request($!req);
+    if $!res.code != 204 {
+        self.print-error;
+        return False;
+    }
+    return True;
+  }
+
   method list-buckets {
     my $res = self.do-request(:path('')) or return;
     return S3::BucketListResult.from-xml($res.content);
@@ -135,6 +148,18 @@ class S3 {
       my $s3-url = S3::URL.parse($url);
       my $res = self.do-put-request(:path($s3-url.path), :subdomain($s3-url.bucket), :$content);
       return $res.code == 200;
+  }
+
+  multi method delete(S3::Object:D $object) {
+    return self.do-delete-request(:path($object.key), :subdomain($object.bucket.name));
+  }
+
+  multi method delete(Str $url) {
+    my $s3-url = S3::URL.parse($url) or die "can't parse $url";
+    return self.delete:
+        S3::Object.new:
+            key => $s3-url.path,
+            bucket => S3::Bucket.new: name => $s3-url.bucket
   }
 
 }
