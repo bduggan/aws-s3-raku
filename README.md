@@ -2,7 +2,7 @@
 
 Client for Amazon Web Services' Simple Storage Service
 
-[![Build Status](https://travis-ci.org/bduggan/aws-s3-perl6.svg)](https://travis-ci.org/bduggan/aws-s3-perl6)
+[![Build Status](https://travis-ci.org/bduggan/aws-s3-raku.svg)](https://travis-ci.org/bduggan/aws-s3-raku)
 
 Synopsis
 --------

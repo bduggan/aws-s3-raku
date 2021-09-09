@@ -1,6 +1,6 @@
-language: perl6
+language: raku
 sudo: false
-perl6:
+raku:
   - latest
 install:
   - rakudobrew build-zef
