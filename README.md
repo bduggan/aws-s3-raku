@@ -2,11 +2,9 @@
 
 Client for Amazon Web Services' Simple Storage Service
 
-[![Build Status](https://travis-ci.org/bduggan/aws-s3-raku.svg)](https://travis-ci.org/bduggan/aws-s3-raku)
-
 Synopsis
 --------
-```p6
+```raku
 use WebService::AWS::S3;
 
 my $secret-access-key = 'passw0rd';
@@ -43,7 +41,7 @@ and AWS_ACCESS_KEY_ID have been set.
 
 * Print the contents of the first object in the first bucket.
 
-```p6
+```raku
 use WebService::AWS::S3;
 
 my \s3 = S3.new(:region<us-east-1>);
@@ -57,7 +55,7 @@ say $content;
 
 * Get contents from a known S3 bucket and key.
 
-```p6
+```raku
 use WebService::AWS::S3;
 
 my \s3 = S3.new(:region<us-east-1>);
@@ -66,7 +64,7 @@ say s3.get("s3://my.own.bucket/hello/world.txt")
 
 * Put text to an S3 location.
 
-```p6
+```raku
 use WebService::AWS::S3;
 
 my \s3 = S3.new(:region<us-east-1>);
