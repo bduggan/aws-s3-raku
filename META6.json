@@ -32,7 +32,7 @@
    "authors" : [
       "Brian Duggan <bduggan@matatu.org>"
    ],
-   "version" : "0.0.3",
+   "version" : "0.0.4",
    "license" : "MIT",
    "description" : "AWS S3 Client"
 }
