@@ -131,9 +131,12 @@ class S3 {
   }
 
   multi method get(S3::Object:D $object) {
-    my $res = self.do-request(:path($object.key), :subdomain($object.bucket.name));
-    # say $res.header.fields.map({ .name => .values}).perl;
-    return $res.content;
+    if my $res = self.do-request(:path($object.key), :subdomain($object.bucket.name)) {
+        $res.content;
+    }
+    else {
+        Nil
+    }
   }
 
   multi method get(Str $url) {
