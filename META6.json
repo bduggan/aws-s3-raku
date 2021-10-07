@@ -8,7 +8,8 @@
       "WebService::AWS::S3::Request" : "lib/WebService/AWS/S3/Request.pm6"
    },
    "test-depends" : [
-      "Test"
+      "Test",
+      "Test::Mock"
    ],
    "support" : {
       "source" : "git://github.com/bduggan/aws-s3-raku.git"

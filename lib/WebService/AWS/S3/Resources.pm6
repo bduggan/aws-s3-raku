@@ -83,6 +83,7 @@ class S3::Error does XML::Class[
     has $.code is xml-element('Code');
     has $.message is xml-element('Message');
     has $.aws-access-key-id is xml-element('AWSAccessKeyId');
+    has $.key is xml-element('Key');
     has $.string-to-sign is xml-element('StringToSign');
     has $.signature-provided is xml-element('SignatureProvided');
     has $.canonical-request is xml-element('CanonicalRequest');

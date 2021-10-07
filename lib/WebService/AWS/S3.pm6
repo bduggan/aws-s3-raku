@@ -27,6 +27,7 @@ class S3 {
   has $.ua = HTTP::UserAgent.new;
   has $!req;
   has $!res;
+  has Bool $.exception = False;
 
   method signed-headers(:$host!, :$path!, Str:D :$body="", :$query-string, :$method="GET" --> Hash) {
     my $region     = 'us-east-1';
@@ -66,8 +67,38 @@ class S3 {
     }
   }
 
+  class X::AWS::S3 is Exception {
+      has S3::Error $.error is required;
+      has Str       $.operation is required;
+
+      method message( --> Str ) {
+          "Got { $!error.code } ( { $!error.message } ) in { $!operation } { $!error.key ?? 'of ' ~ $!error.key !! '' }";
+      }
+  }
+
+  method handle-response( Int $expected-code, Str $operation ) {
+      if $!res.code != $expected-code {
+        if $!exception {
+          my $error = S3::Error.from-xml($!res.content);
+          X::AWS::S3.new(:$error, :$operation).throw;
+        }
+        else {
+          self.print-error;
+          False;
+        }
+      }
+      else {
+          $!res;
+      }
+  }
+
+  method get-host(:$subdomain --> Str ) {
+    my $host = (|($_ with $subdomain), $.aws-host).join('.');
+    $host;
+  }
+
   method do-request(:$subdomain,:$path is copy ='',:$query) {
-    my $host = (|($subdomain xx so $subdomain), $.aws-host).join('.');
+    my $host = self.get-host(:$subdomain);
     $path = "/$path" unless $path ~~ / ^ '/' /;
     my $uri = 'https://' ~ $host ~ $path;
     my $query-string = "";
@@ -77,39 +108,27 @@ class S3 {
     }
     $!req = GET $uri,|self.signed-headers(:$host,:$path,:$query-string);
     $!res = $.ua.request($!req);
-    if $!res.code != 200 {
-        self.print-error;
-        return;
-    }
-    return $!res;
+    return self.handle-response(200, 'GET');
   }
 
   method do-put-request(:$subdomain, :$path is copy='', Str:D :$content="") {
-    my $host = (|($subdomain xx so $subdomain), $.aws-host).join('.');
+    my $host = self.get-host(:$subdomain);
     $path = "/$path" unless $path ~~ / ^ '/' /;
     my $uri = 'https://' ~ $host ~ $path;
     $!req = PUT $uri,
                 |self.signed-headers(:$host,:$path,:body($content),:method<PUT>),
               content => $content;
     $!res = $.ua.request($!req);
-    if $!res.code != 200 {
-        self.print-error;
-        return;
-    }
-    return $!res;
+    return self.handle-response(200, 'PUT');
   }
 
   method do-delete-request(:$subdomain, :$path is copy='') {
-    my $host = (|($subdomain xx so $subdomain), $.aws-host).join('.');
+    my $host = self.get-host(:$subdomain);
     $path = "/$path" unless $path ~~ / ^ '/' /;
     my $uri = 'https://' ~ $host ~ $path;
     $!req = DELETE $uri, |self.signed-headers(:$host,:$path,:method<DELETE>);
     $!res = $.ua.request($!req);
-    if $!res.code != 204 {
-        self.print-error;
-        return False;
-    }
-    return True;
+    return ?self.handle-response(204, 'DELETE');
   }
 
   method list-buckets {
