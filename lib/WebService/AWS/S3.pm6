@@ -24,6 +24,7 @@ class S3 {
   has $.region = 'us-east-1';
   has $.secret-access-key = %*ENV<AWS_SECRET_ACCESS_KEY> || die "Please set AWS_SECRET_ACCESS_KEY";
   has $.access-key-id = %*ENV<AWS_ACCESS_KEY_ID> || die "Please set AWS_ACCESS_KEY_ID";
+  has Str $.security-token = ( %*ENV<AWS_SESSION_TOKEN> // Str );
   has $.ua = HTTP::UserAgent.new;
   has $!req;
   has $!res;
@@ -37,11 +38,13 @@ class S3 {
       :Host( $host ),
       :X-Amz-Date( timestamp($now) ),
       :X-AMZ-Content-SHA256( $sha ),
+      ( x-amz-security-token => $_ with $.security-token ),
       ;
     my $req = S3::Request.new(
        :$.secret-access-key,
        :$.region,
        :$.access-key-id,
+       :$.security-token,
        :$path
        :$query-string,
        :$body,

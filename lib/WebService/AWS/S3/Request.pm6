@@ -12,6 +12,7 @@ has %.headers;
 
 has $.access-key-id is required;
 has $.secret-access-key;
+has Str $.security-token;
 has $.region is required;
 has $.service = 's3';
 has DateTime $.date is required;
@@ -62,6 +63,9 @@ method canonical-uri {
 method canonical-headers {
     %.headers<X-Amz-Date> //= timestamp(self.date);
     %.headers<Host> //= self.host;
+    if $.security-token.defined && not %.headers<x-amz-security-token>:exists {
+       %.headers<x-amz-security-token> = $.security-token;
+    }
     my %canonical = map { .key.lc => .value }, %.headers;
     %canonical;
 }
