@@ -3,9 +3,9 @@
       "aws"
    ],
    "provides" : {
-      "WebService::AWS::S3" : "lib/WebService/AWS/S3.pm6",
-      "WebService::AWS::S3::Resources" : "lib/WebService/AWS/S3/Resources.pm6",
-      "WebService::AWS::S3::Request" : "lib/WebService/AWS/S3/Request.pm6"
+      "WebService::AWS::S3" : "lib/WebService/AWS/S3.rakumod",
+      "WebService::AWS::S3::Resources" : "lib/WebService/AWS/S3/Resources.rakumod",
+      "WebService::AWS::S3::Request" : "lib/WebService/AWS/S3/Request.rakumod"
    },
    "test-depends" : [
       "Test",
@@ -14,9 +14,9 @@
    "support" : {
       "source" : "git://github.com/bduggan/aws-s3-raku.git"
    },
-   "perl" : "6.c",
+   "perl" : "6.*",
    "build-depends" : [],
-   "auth" : "github:bduggan",
+   "auth" : "cpan:bduggan",
    "source-url" : "git://github.com/bduggan/aws-s3-raku.git",
    "depends" : [
       "Test",
