@@ -20,6 +20,7 @@ class S3::URL {
 }
 
 class S3 {
+  has $.scheme = 'https';
   has $.aws-host = 's3.amazonaws.com';
   has $.region = 'us-east-1';
   has $.secret-access-key = %*ENV<AWS_SECRET_ACCESS_KEY> || die "Please set AWS_SECRET_ACCESS_KEY";
@@ -100,10 +101,14 @@ class S3 {
     $host;
   }
 
+  method construct-uri($host, $path is rw) {
+    $path = "/$path" unless $path.starts-with('/');
+    $.scheme ~ '://' ~ $host ~ $path;
+  }
+
   method do-request(:$subdomain,:$path is copy ='',:$query) {
     my $host = self.get-host(:$subdomain);
-    $path = "/$path" unless $path ~~ / ^ '/' /;
-    my $uri = 'https://' ~ $host ~ $path;
+    my $uri = self.construct-uri($host,$path);
     my $query-string = "";
     if $query {
         $query-string = join '&', map {"{.key}={uri-escape(.value.Str)}"}, $query.pairs.sort;
@@ -116,8 +121,7 @@ class S3 {
 
   method do-put-request(:$subdomain, :$path is copy='', Str:D :$content="") {
     my $host = self.get-host(:$subdomain);
-    $path = "/$path" unless $path ~~ / ^ '/' /;
-    my $uri = 'https://' ~ $host ~ $path;
+    my $uri = self.construct-uri($host,$path);
     $!req = PUT $uri,
                 |self.signed-headers(:$host,:$path,:body($content),:method<PUT>),
               content => $content;
@@ -127,8 +131,7 @@ class S3 {
 
   method do-delete-request(:$subdomain, :$path is copy='') {
     my $host = self.get-host(:$subdomain);
-    $path = "/$path" unless $path ~~ / ^ '/' /;
-    my $uri = 'https://' ~ $host ~ $path;
+    my $uri = self.construct-uri($host,$path);
     $!req = DELETE $uri, |self.signed-headers(:$host,:$path,:method<DELETE>);
     $!res = $.ua.request($!req);
     return ?self.handle-response(204, 'DELETE');
