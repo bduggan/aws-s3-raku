@@ -4,7 +4,7 @@ use v6;
 use Test;
 use JSON::Fast;
 use URI::Escape;
-use Digest::SHA;
+use Digest::SHA256::Native;
 use HTTP::UserAgent;
 use HTTP::Request::Common;
 use WebService::AWS::S3::Resources;

@@ -1,5 +1,5 @@
 unit class S3::Request;
-use Digest::SHA;
+use Digest::SHA256::Native;
 use Digest::HMAC;
 use URI::Escape;
 

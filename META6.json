@@ -26,8 +26,10 @@
       "HTTP::UserAgent",
       "Digest",
       "Digest::HMAC",
+      "Digest::SHA256::Native",
       "JSON::Fast",
-      "URI"
+      "URI",
+      "Test::Mock"
    ],
    "name" : "WebService::AWS::S3",
    "authors" : [
