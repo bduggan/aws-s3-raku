@@ -2,6 +2,8 @@
 
 Client for Amazon Web Services' Simple Storage Service
 
+[![SparrowCI](https://ci.sparrowhub.io/project/gh-bduggan-aws-s3-raku/badge)](https://ci.sparrowhub.io)
+
 Synopsis
 --------
 ```raku
